@@ -11,7 +11,6 @@
     <title>Danh Sách Mặt Bằng</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
             margin: 0;
             padding: 20px;
         }
@@ -143,7 +142,7 @@
             <td>${matBang.ngayBatDau}</td>
             <td>${matBang.ngayKetThuc}</td>
             <td>
-                <a href="/matbang?action=delete&maMatBang=${matBang.maMatBang}" onclick="return confirm('Bạn có chắc chắn muốn xóa mặt bằng này?')">Xóa</a>
+                <button onclick="if(confirm('Bạn có chắc chắn muốn xóa mặt bằng này?')) window.location.href = '/delete?maMatBang=${matBang.maMatBang}'; ">Xóa</button>
             </td>
         </tr>
     </c:forEach>

@@ -1,6 +1,7 @@
 package com.codegym.exam3.controller;
 
 
+import com.codegym.exam3.connection.DBConnection;
 import com.codegym.exam3.dao.MatBangDao;
 import com.codegym.exam3.model.MatBangModel;
 
@@ -17,7 +18,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-@WebServlet(name = "matbang", urlPatterns = {"/create", "/matbang"})
+@WebServlet(name = "matbang", urlPatterns = {"/create","/delete", "/matbang"})
 public class MatBangController extends HttpServlet {
     private MatBangDao matBangDao = new MatBangDao();
 
@@ -40,6 +41,9 @@ public class MatBangController extends HttpServlet {
                     break;
                 case "/matbang":
                     ListMatBang(request, response);
+                    break;
+                case "/delete":
+                    deleteMatBang(request, response);
                     break;
                 default:
                     ListMatBang(request, response);
@@ -71,6 +75,17 @@ public class MatBangController extends HttpServlet {
         List<MatBangModel> matBangList = matBangDao.selectAllMatBang();
         request.setAttribute("matBangList", matBangDao.selectAllMatBang());
         request.getRequestDispatcher("/WEB-INF/view/list.jsp").forward(request, response);
+    }
+    private void deleteMatBang(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String maMatBang = request.getParameter("maMatBang");
+        try {
+            matBangDao.deleteMatBang(maMatBang);
+            response.sendRedirect("/matbang");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            request.setAttribute("errorMessage", "Có lỗi xảy ra khi xóa mặt bằng!");
+            request.getRequestDispatcher("/WEB-INF/view/list.jsp").forward(request, response);
+        }
     }
 
     @Override
